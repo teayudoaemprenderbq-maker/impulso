@@ -30,6 +30,25 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             border-top: 4px solid var(--primary);
         }
+        .logo-cliente {
+            max-width: 140px;
+            height: auto;
+            display: block;
+            margin: 0 auto 1rem auto;
+        }
+        .logo-dev {
+            max-width: 110px;
+            height: auto;
+            display: block;
+            margin: 2rem auto 0.5rem auto;
+            opacity: 0.85;
+        }
+        .dev-text {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #9ca3af;
+            margin-bottom: 0;
+        }
         h2 { margin-top: 0; font-size: 1.5rem; margin-bottom: 1rem; color: var(--text-main); text-align: center; }
         h3 { font-size: 1.1rem; color: var(--primary); margin-top: 1rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; }
         label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem; margin-top: 0.75rem; }
@@ -70,14 +89,19 @@
 <body>
     <!-- Pantalla de Login -->
     <div id="login-screen" class="card">
+        <img src="https://static.wixstatic.com/media/d0ce54_b23afa43d81f430dbe1c219e3f470f11~mv2.jpg" alt="Logo Cliente" class="logo-cliente">
         <h2>Acceso Impulsadores</h2>
         <input type="text" id="user" placeholder="Usuario">
         <input type="password" id="pass" placeholder="Contraseña">
         <button onclick="login()">Ingresar</button>
+        
+        <p class="dev-text">Desarrollado por</p>
+        <img src="https://static.wixstatic.com/media/d0ce54_c999d1aa9976438a98b0f5b2157b7adc~mv2.png" alt="Logo Desarrollador" class="logo-dev">
     </div>
 
     <!-- Pantalla Principal -->
     <div id="app-screen" class="card hidden">
+        <img src="https://static.wixstatic.com/media/d0ce54_b23afa43d81f430dbe1c219e3f470f11~mv2.jpg" alt="Logo Cliente" class="logo-cliente">
         <h2>Registro de Impulso</h2>
         <div id="user-display" class="user-info"></div>
 
@@ -140,10 +164,13 @@
         </div>
 
         <button onclick="guardarRegistro()">Guardar e Enviar</button>
+
+        <p class="dev-text">Desarrollado por</p>
+        <img src="https://static.wixstatic.com/media/d0ce54_c999d1aa9976438a98b0f5b2157b7adc~mv2.png" alt="Logo Desarrollador" class="logo-dev">
     </div>
 
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyfigWSoz3xXFU6OpLyEXIBrX_KRD51_gdt-iw26tpUUQ1AL-7SxC6VLjzkTK59rkg0Cg/exec/exec"; 
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyfigWSoz3xXFU6OpLyEXIBrX_KRD51_gdt-iw26tpUUQ1AL-7SxC6VLjzkTK59rkg0Cg/exec"; 
         let currentUser = "";
         let latitud = "";
         let longitud = "";
