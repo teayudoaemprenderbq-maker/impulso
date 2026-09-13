@@ -98,6 +98,33 @@
         <p class="dev-text">Desarrollado por</p>
         <img src="https://static.wixstatic.com/media/d0ce54_c999d1aa9976438a98b0f5b2157b7adc~mv2.png" alt="Logo Desarrollador" class="logo-dev">
     </div>
+    <!-- Pantalla de Panel Administrativo -->
+<div id="admin-screen" class="card hidden max-w-4xl mx-auto p-4">
+    <h2 class="text-xl font-bold text-center mb-4">Panel de Control Administrativo</h2>
+    <div class="flex justify-between items-center mb-4">
+        <span id="admin-user-display" class="text-sm font-semibold text-gray-600"></span>
+        <button onclick="cerrarSesion()" class="bg-red-500 text-white px-3 py-1 rounded text-sm">Cerrar Sesión</button>
+    </div>
+    
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 text-sm">
+            <thead>
+                <tr class="bg-gray-100 border-b">
+                    <th class="py-2 px-3 text-left">Tienda</th>
+                    <th class="py-2 px-3 text-left">Usuario</th>
+                    <th class="py-2 px-3 text-left">Fecha / Hora</th>
+                    <th class="py-2 px-3 text-center">Estado</th>
+                    <th class="py-2 px-3 text-center">Ventas</th>
+                    <th class="py-2 px-3 text-center">Evidencias</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-registros-body">
+                <!-- Los registros se cargan dinámicamente aquí -->
+            </tbody>
+        </table>
+    </div>
+    <button onclick="cargarRegistrosAdmin()" class="mt-4 bg-blue-600 text-white py-2 px-4 rounded w-full">Actualizar Tabla</button>
+</div>
 
     <!-- Pantalla Principal -->
     <div id="app-screen" class="card hidden">
@@ -179,28 +206,71 @@
             const usuario = document.getElementById('user').value.trim();
             const clave = document.getElementById('pass').value.trim();
 
-            if (!usuario || !clave) {
-                alert("Por favor completa usuario y contraseña.");
+            // Modificación en la función login existente
+if (data.success) {
+    currentUser = user;
+    const rol = data.rol;
+    localStorage.setItem("user", user);
+    localStorage.setItem("rol", rol);
+    
+    document.getElementById("login-screen").classList.add("hidden");
+
+    // Validar redirección según el rol
+    if (rol.toLowerCase() === "administrador" || rol.toLowerCase() === "admin") {
+        document.getElementById("admin-screen").classList.remove("hidden");
+        document.getElementById("admin-user-display").innerText = `Administrador: ${currentUser}`;
+        cargarRegistrosAdmin();
+    } else {
+        document.getElementById("app-screen").classList.remove("hidden");
+        document.getElementById("user-display").innerText = `Usuario: ${currentUser} (${rol})`;
+    }
+}
+
+// Función para descargar y pintar los registros en la tabla
+async function cargarRegistrosAdmin() {
+    const tbody = document.getElementById("tabla-registros-body");
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-gray-500">Cargando registros...</td></tr>`;
+
+    try {
+        const response = await fetch(`${API_URL}?action=getRegistros`);
+        const result = await response.json();
+
+        if (result.success) {
+            tbody.innerHTML = "";
+            if (result.registros.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-gray-500">No hay registros disponibles.</td></tr>`;
                 return;
             }
 
-            try {
-                let response = await fetch(`${WEB_APP_URL}?action=login&usuario=${encodeURIComponent(usuario)}&clave=${encodeURIComponent(clave)}`);
-                let result = await response.json();
-
-                if (result.success) {
-                    currentUser = result.usuario;
-                    document.getElementById('user-display').innerText = `Usuario: ${currentUser} (${result.rol})`;
-                    document.getElementById('login-screen').classList.add('hidden');
-                    document.getElementById('app-screen').classList.remove('hidden');
-                    cargarClientes();
-                } else {
-                    alert(result.error);
-                }
-            } catch (error) {
-                alert("Error de conexión: " + error.message);
-            }
+            result.registros.forEach(reg => {
+                let tr = document.createElement("tr");
+                tr.className = "border-b hover:bg-gray-50";
+                tr.innerHTML = `
+                    <td class="py-2 px-3">${reg.tienda}</td>
+                    <td class="py-2 px-3">${reg.usuario}</td>
+                    <td class="py-2 px-3">${reg.timestamp}</td>
+                    <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded text-xs ${reg.estado === 'Completado' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">${reg.estado}</span></td>
+                    <td class="py-2 px-3 text-center font-bold">${reg.ventas}</td>
+                    <td class="py-2 px-3 text-center">
+                        ${reg.fotoInicio ? `<a href="${reg.fotoInicio}" target="_blank" class="text-blue-600 underline mr-2">Inicio</a>` : ''}
+                        ${reg.fotoFinal ? `<a href="${reg.fotoFinal}" target="_blank" class="text-indigo-600 underline">Cierre</a>` : ''}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } else {
+            alert("Error al cargar los datos administrativos: " + result.error);
         }
+    } catch (error) {
+        console.error("Error de conexión:", error);
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-red-500">Error al conectar con el servidor.</td></tr>`;
+    }
+}
+
+function cerrarSesion() {
+    localStorage.clear();
+    location.reload();
+}
 
         async function cargarClientes() {
             try {
