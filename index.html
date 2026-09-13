@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Impulsos - Arándanos de Vida</title>
+    <style>
+        :root {
+            --primary: #16a34a;
+            --primary-hover: #15803d;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --border: #d1d5db;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 1rem;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .card {
+            max-width: 450px;
+            margin: 2rem auto;
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--primary);
+        }
+        h2 { margin-top: 0; font-size: 1.5rem; margin-bottom: 1rem; color: var(--text-main); text-align: center; }
+        label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem; margin-top: 0.75rem; }
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 0.25rem;
+            box-sizing: border-box;
+            font-size: 1rem;
+            background-color: #f9fafb;
+        }
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.25rem;
+            font-size: 1rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            margin-top: 1rem;
+            background-color: var(--primary);
+        }
+        button:hover { background-color: var(--primary-hover); }
+        .btn-outline {
+            background-color: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
+            margin-bottom: 0.5rem;
+        }
+        .hidden { display: none !important; }
+        #gps-data { font-size: 0.75rem; text-align: center; color: #6b7280; margin-bottom: 1rem; }
+        .user-info { font-size: 0.875rem; color: #4b5563; margin-bottom: 1rem; text-align: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <!-- Pantalla de Login -->
+    <div id="login-screen" class="card">
+        <h2>Acceso Impulsadores</h2>
+        <input type="text" id="user" placeholder="Usuario">
+        <input type="password" id="pass" placeholder="Contraseña">
+        <button onclick="login()">Ingresar</button>
+    </div>
+
+    <!-- Pantalla Principal -->
+    <div id="app-screen" class="card hidden">
+        <h2>Registro de Impulso</h2>
+        <div id="user-display" class="user-info"></div>
+
+        <label>Seleccionar Acción</label>
+        <select id="tipo_accion" onchange="cambiarModoAccion()">
+            <option value="inicio">Inicio de Turno</option>
+            <option value="final">Final de Turno</option>
+        </select>
+
+        <label>Seleccionar Cliente / Tienda</label>
+        <select id="select_cliente">
+            <option value="">Cargando clientes...</option>
+        </select>
+
+        <button type="button" onclick="capturarGPS()" class="btn-outline">📍 Capturar Coordenada GPS</button>
+        <p id="gps-data">GPS no capturado</p>
+
+        <label>Evidencia Fotográfica</label>
+        <input type="file" accept="image/*" capture="environment" id="cameraInput">
+
+        <!-- Campos dinámicos para INICIO -->
+        <div id="seccion-inicio">
+            <label>Concentrado Pequeño (130ml)</label>
+            <input type="number" id="cant_pequeno" value="0" min="0">
+            
+            <label>Concentrado Mediano (250ml)</label>
+            <input type="number" id="cant_mediano" value="0" min="0">
+            
+            <label>Concentrado Grande (500ml)</label>
+            <input type="number" id="cant_grande" value="0" min="0">
+            
+            <label>Cucharas</label>
+            <input type="number" id="cant_cucharas" value="0" min="0">
+            
+            <label>Vasos</label>
+            <input type="number" id="cant_vasos" value="0" min="0">
+        </div>
+
+        <!-- Campos dinámicos para FINAL -->
+        <div id="seccion-final" class="hidden">
+            <label>Cantidad de Degustaciones Realizadas</label>
+            <input type="number" id="degustaciones" value="0" min="0">
+            
+            <label>Cantidad de Ventas Realizadas</label>
+            <input type="number" id="ventas" value="0" min="0">
+
+            <label>Observaciones</label>
+            <textarea id="observaciones" placeholder="Comentarios adicionales..."></textarea>
+        </div>
+
+        <button onclick="guardarRegistro()">Guardar e Enviar</button>
+    </div>
+
+    <script>
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxT1zFZ-pYZLJKxarBrVYriNZqnx3EJYKOzSgA7es9KAwfM4X5WwbPMZ7qajb2MFTbBmw/exec"; // Reemplaza con la URL de tu Web App
+        let currentUser = "";
+        let latitud = "";
+        let longitud = "";
+
+        async function login() {
+            const usuario = document.getElementById('user').value.trim();
+            const clave = document.getElementById('pass').value.trim();
+
+            if (!usuario || !clave) {
+                alert("Por favor completa usuario y contraseña.");
+                return;
+            }
+
+            try {
+                let response = await fetch(`${WEB_APP_URL}?action=login&usuario=${encodeURIComponent(usuario)}&clave=${encodeURIComponent(clave)}`);
+                let result = await response.json();
+
+                if (result.success) {
+                    currentUser = result.usuario;
+                    document.getElementById('user-display').innerText = `Usuario: ${currentUser} (${result.rol})`;
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('app-screen').classList.remove('hidden');
+                    cargarClientes();
+                } else {
+                    alert(result.error);
+                }
+            } catch (error) {
+                alert("Error de conexión: " + error.message);
+            }
+        }
+
+        async function cargarClientes() {
+            try {
+                let response = await fetch(`${WEB_APP_URL}?action=getClientes`);
+                let result = await response.json();
+
+                if (result.success) {
+                    let select = document.getElementById('select_cliente');
+                    select.innerHTML = '<option value="">-- Seleccione un Distribuidor --</option>';
+                    result.clientes.forEach(c => {
+                        let option = document.createElement('option');
+                        option.value = c.nombre;
+                        option.textContent = `${c.nombre} (${c.ciudad})`;
+                        select.appendChild(option);
+                    });
+                } else {
+                    alert("No se pudieron cargar los clientes.");
+                }
+            } catch (error) {
+                console.error("Error cargando clientes:", error);
+            }
+        }
+
+        function cambiarModoAccion() {
+            let modo = document.getElementById('tipo_accion').value;
+            if (modo === "inicio") {
+                document.getElementById('seccion-inicio').classList.remove('hidden');
+                document.getElementById('seccion-final').classList.add('hidden');
+            } else {
+                document.getElementById('seccion-inicio').classList.add('hidden');
+                document.getElementById('seccion-final').classList.remove('hidden');
+            }
+        }
+
+        function capturarGPS() {
+            if (navigator.geolocation) {
+                document.getElementById('gps-data').innerText = "Obteniendo ubicación...";
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        latitud = position.coords.latitude;
+                        longitud = position.coords.longitude;
+                        document.getElementById('gps-data').innerText = `Lat: ${latitud.toFixed(6)}, Lon: ${longitud.toFixed(6)}`;
+                    },
+                    (error) => {
+                        alert("Error obteniendo GPS: " + error.message);
+                        document.getElementById('gps-data').innerText = "No se pudo obtener la ubicación";
+                    },
+                    { enableHighAccuracy: true }
+                );
+            } else {
+                alert("La geolocalización no es compatible en este navegador.");
+            }
+        }
+
+        async function guardarRegistro() {
+            let modo = document.getElementById('tipo_accion').value;
+            let tienda = document.getElementById('select_cliente').value;
+            let fileInput = document.getElementById('cameraInput');
+
+            if (!tienda) {
+                alert("Selecciona un cliente o distribuidor.");
+                return;
+            }
+            if (!latitud || !longitud) {
+                alert("Debes capturar las coordenadas GPS obligatoriamente.");
+                return;
+            }
+            if (fileInput.files.length === 0) {
+                alert("La fotografía es obligatoria.");
+                return;
+            }
+
+            let file = fileInput.files[0];
+            let reader = new FileReader();
+
+            reader.onload = async function(event) {
+                let fotoBase64 = event.target.result;
+                let payload = {
+                    action: modo === "inicio" ? "registrar_inicio" : "registrar_final",
+                    usuario: currentUser,
+                    tienda: tienda,
+                    latitud: latitud,
+                    longitud: longitud,
+                    timestamp: new Date().toLocaleString(),
+                    fotoBase64: fotoBase64
+                };
+
+                if (modo === "inicio") {
+                    payload.pequeno = document.getElementById('cant_pequeno').value;
+                    payload.mediano = document.getElementById('cant_mediano').value;
+                    payload.grande = document.getElementById('cant_grande').value;
+                    payload.cucharas = document.getElementById('cant_cucharas').value;
+                    payload.vasos = document.getElementById('cant_vasos').value;
+                } else {
+                    payload.degustaciones = document.getElementById('degustaciones').value;
+                    payload.ventas = document.getElementById('ventas').value;
+                    payload.observaciones = document.getElementById('observaciones').value;
+                }
+
+                try {
+                    let response = await fetch(WEB_APP_URL, {
+                        method: "POST",
+                        body: JSON.stringify(payload)
+                    });
+                    let result = await response.json();
+
+                    if (result.success) {
+                        alert(result.message);
+                        location.reload();
+                    } else {
+                        alert("Error: " + result.error);
+                    }
+                } catch (error) {
+                    alert("Error al enviar los datos: " + error.message);
+                }
+            };
+
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+</html>
