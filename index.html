@@ -31,6 +31,7 @@
             border-top: 4px solid var(--primary);
         }
         h2 { margin-top: 0; font-size: 1.5rem; margin-bottom: 1rem; color: var(--text-main); text-align: center; }
+        h3 { font-size: 1.1rem; color: var(--primary); margin-top: 1rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; }
         label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem; margin-top: 0.75rem; }
         input, select, textarea {
             width: 100%;
@@ -94,7 +95,7 @@
         <button type="button" onclick="capturarGPS()" class="btn-outline">📍 Capturar Coordenada GPS</button>
         <p id="gps-data">GPS no capturado</p>
 
-        <label>Evidencia Fotográfica</label>
+        <label id="label-foto">Evidencia Fotográfica (Inicio)</label>
         <input type="file" accept="image/*" capture="environment" id="cameraInput">
 
         <!-- Campos dinámicos para INICIO -->
@@ -117,6 +118,17 @@
 
         <!-- Campos dinámicos para FINAL -->
         <div id="seccion-final" class="hidden">
+            <h3>Gasto de Arándanos</h3>
+            <label>Gasto Concentrado Pequeño (130ml)</label>
+            <input type="number" id="gasto_pequeno" value="0" min="0">
+            
+            <label>Gasto Concentrado Mediano (250ml)</label>
+            <input type="number" id="gasto_mediano" value="0" min="0">
+            
+            <label>Gasto Concentrado Grande (500ml)</label>
+            <input type="number" id="gasto_grande" value="0" min="0">
+
+            <h3>Resultados del Turno</h3>
             <label>Cantidad de Degustaciones Realizadas</label>
             <input type="number" id="degustaciones" value="0" min="0">
             
@@ -131,7 +143,7 @@
     </div>
 
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyplEM2mSF8-hmqdSHWmlE0RwCswyt4wD-A_Fe2KrFyYbyjTBvMdCdtYnEzbzhG8cw8YQ/exec"; // Reemplaza con la URL de tu Web App
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyfigWSoz3xXFU6OpLyEXIBrX_KRD51_gdt-iw26tpUUQ1AL-7SxC6VLjzkTK59rkg0Cg/exec/exec"; 
         let currentUser = "";
         let latitud = "";
         let longitud = "";
@@ -190,9 +202,11 @@
             if (modo === "inicio") {
                 document.getElementById('seccion-inicio').classList.remove('hidden');
                 document.getElementById('seccion-final').classList.add('hidden');
+                document.getElementById('label-foto').innerText = "Evidencia Fotográfica (Inicio)";
             } else {
                 document.getElementById('seccion-inicio').classList.add('hidden');
                 document.getElementById('seccion-final').classList.remove('hidden');
+                document.getElementById('label-foto').innerText = "Evidencia Fotográfica (Final / Cierre)";
             }
         }
 
@@ -256,6 +270,9 @@
                     payload.cucharas = document.getElementById('cant_cucharas').value;
                     payload.vasos = document.getElementById('cant_vasos').value;
                 } else {
+                    payload.gasto_pequeno = document.getElementById('gasto_pequeno').value;
+                    payload.gasto_mediano = document.getElementById('gasto_mediano').value;
+                    payload.gasto_grande = document.getElementById('gasto_grande').value;
                     payload.degustaciones = document.getElementById('degustaciones').value;
                     payload.ventas = document.getElementById('ventas').value;
                     payload.observaciones = document.getElementById('observaciones').value;
