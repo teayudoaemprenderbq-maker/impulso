@@ -479,23 +479,48 @@ function cerrarSesion() {
         }
 
         function capturarGPS() {
-            if (navigator.geolocation) {
-                document.getElementById('gps-data').innerText = "Obteniendo ubicación...";
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        latitud = position.coords.latitude;
-                        longitud = position.coords.longitude;
-                        document.getElementById('gps-data').innerText = `Lat: ${latitud.toFixed(6)}, Lon: ${longitud.toFixed(6)}`;
-                    },
-                    (error) => {
-                        alert("Error obteniendo GPS: " + error.message);
-                        document.getElementById('gps-data').innerText = "No se pudo obtener la ubicación";
-                    },
-                    { enableHighAccuracy: true }
-                );
-            } else {
+            if (!navigator.geolocation) {
                 alert("La geolocalización no es compatible en este navegador.");
+                return;
             }
+
+            const gpsDataElement = document.getElementById('gps-data');
+            gpsDataElement.innerText = "Obteniendo ubicación... por favor espera.";
+
+            // Opciones cruciales para que funcione correctamente en celulares
+            const opcionesGPS = {
+                enableHighAccuracy: true, // Intenta usar el GPS del dispositivo
+                timeout: 15000,           // MÁXIMO 15 segundos de espera (evita que se congele)
+                maximumAge: 0             // Fuerza a obtener una ubicación fresca, sin usar caché
+            };
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    // Si es exitoso, guardamos en tus variables globales
+                    latitud = position.coords.latitude;
+                    longitud = position.coords.longitude;
+                    gpsDataElement.innerText = `Lat: ${latitud.toFixed(6)}, Lon: ${longitud.toFixed(6)}`;
+                    alert("📍 Ubicación capturada con éxito.");
+                },
+                (error) => {
+                    // Manejo de errores específico para guiar al impulsador
+                    let mensajeError = "Error desconocido.";
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            mensajeError = "Permiso denegado. Debes autorizar el uso del GPS en el navegador de tu celular.";
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            mensajeError = "Ubicación no disponible. Verifica que la opción 'Ubicación' o 'GPS' del celular esté encendida.";
+                            break;
+                        case error.TIMEOUT:
+                            mensajeError = "Tiempo agotado. El GPS está tardando demasiado. Intenta acercarte a una ventana o al aire libre.";
+                            break;
+                    }
+                    alert("Fallo al obtener ubicación: " + mensajeError);
+                    gpsDataElement.innerText = "No se pudo obtener la ubicación ❌";
+                },
+                opcionesGPS
+            );
         }
 
         async function guardarRegistro() {
