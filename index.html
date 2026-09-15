@@ -320,7 +320,7 @@
             <textarea id="observaciones" placeholder="Comentarios adicionales..."></textarea>
         </div>
 
-        <button onclick="guardarRegistro()">Guardar e Enviar</button>
+        <button id="btnGuardar" onclick="guardarRegistro()">Guardar e Enviar</button>
 
         <p class="dev-text">Desarrollado por</p>
         <img src="https://static.wixstatic.com/media/d0ce54_c999d1aa9976438a98b0f5b2157b7adc~mv2.png" alt="Logo Desarrollador" class="logo-dev">
@@ -534,7 +534,7 @@ function cerrarSesion() {
         }
 
         async function guardarRegistro() {
-            // NUEVO: Verificar conexión antes de iniciar el guardado
+            // Verificar conexión antes de iniciar el guardado
             if (!navigator.onLine) {
                 alert("Estás sin conexión a internet. Conéctate a una red para guardar y enviar este registro.");
                 return;
@@ -555,6 +555,15 @@ function cerrarSesion() {
             if (fileInput.files.length === 0) {
                 alert("La fotografía es obligatoria.");
                 return;
+            }
+
+            // NUEVO: Bloquear el botón para evitar doble envío
+            let btnGuardar = document.getElementById('btnGuardar');
+            if (btnGuardar) {
+                btnGuardar.disabled = true;
+                btnGuardar.innerText = "Enviando... por favor espera ⏳";
+                btnGuardar.style.opacity = "0.7";
+                btnGuardar.style.cursor = "not-allowed";
             }
 
             let file = fileInput.files[0];
@@ -599,9 +608,23 @@ function cerrarSesion() {
                         location.reload();
                     } else {
                         alert("Error: " + result.error);
+                        // NUEVO: Desbloquear el botón si hay error en el servidor
+                        if (btnGuardar) {
+                            btnGuardar.disabled = false;
+                            btnGuardar.innerText = "Guardar e Enviar";
+                            btnGuardar.style.opacity = "1";
+                            btnGuardar.style.cursor = "pointer";
+                        }
                     }
                 } catch (error) {
                     alert("Error al enviar los datos: " + error.message);
+                    // NUEVO: Desbloquear el botón si falla el internet a mitad de camino
+                    if (btnGuardar) {
+                        btnGuardar.disabled = false;
+                        btnGuardar.innerText = "Guardar e Enviar";
+                        btnGuardar.style.opacity = "1";
+                        btnGuardar.style.cursor = "pointer";
+                    }
                 }
             };
 
