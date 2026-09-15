@@ -534,6 +534,14 @@ function cerrarSesion() {
         }
 
         async function guardarRegistro() {
+            // NUEVO: Verificar conexión antes de iniciar el guardado
+            if (!navigator.onLine) {
+                alert("Estás sin conexión a internet. Conéctate a una red para guardar y enviar este registro.");
+                return;
+            }
+
+            let modo = document.getElementById('tipo_accion').value;
+            let tienda = document.getElementById('select_cliente').value;
             let modo = document.getElementById('tipo_accion').value;
             let tienda = document.getElementById('select_cliente').value;
             let fileInput = document.getElementById('cameraInput');
