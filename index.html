@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control de Impulsos - Arándanos de Vida</title>
+    <title>Control de Impulsos - MINCA</title>
     <style>
         :root {
             --primary: #16a34a;
@@ -85,118 +85,118 @@
         #gps-data { font-size: 0.75rem; text-align: center; color: #6b7280; margin-bottom: 1rem; }
         .user-info { font-size: 0.875rem; color: #4b5563; margin-bottom: 1rem; text-align: center; font-weight: bold; }
         /* --- ESTILOS DEL PANEL ADMINISTRATIVO DESDE CERO --- */
-.admin-container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-.admin-header-flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-}
-.admin-title {
-    color: #4338ca;
-    margin: 0;
-    font-size: 1.5rem;
-}
-.btn-danger {
-    background-color: #ef4444;
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-}
-.btn-danger:hover { background-color: #dc2626; }
-.btn-primary {
-    background-color: #4f46e5;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    width: 100%;
-    margin-top: 1rem;
-}
-.btn-primary:hover { background-color: #4338ca; }
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .admin-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .admin-title {
+            color: #4338ca;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-danger:hover { background-color: #dc2626; }
+        .btn-primary {
+            background-color: #4f46e5;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        .btn-primary:hover { background-color: #4338ca; }
 
-/* Contenedor de la tabla con Scroll */
-.table-responsive {
-    width: 100%;
-    overflow-x: auto;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-}
-.custom-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 1000px;
-    text-align: left;
-}
-.custom-table th, .custom-table td {
-    padding: 10px;
-    border-bottom: 1px solid #e5e7eb;
-    border-right: 1px solid #f3f4f6;
-}
-.custom-table th {
-    font-size: 0.85rem;
-    color: #334155;
-}
-.th-group {
-    background-color: #e2e8f0;
-    text-align: center;
-    font-weight: bold;
-    border-bottom: 2px solid #cbd5e1;
-}
-.th-sub {
-    background-color: #f8fafc;
-    font-weight: 600;
-}
-.custom-table tbody tr:hover {
-    background-color: #f1f5f9;
-}
-.td-center { text-align: center; font-weight: 500; }
-.td-highlight { text-align: center; font-weight: bold; color: #4338ca; background-color: #eef2ff; }
+        /* Contenedor de la tabla con Scroll */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+        }
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+            text-align: left;
+        }
+        .custom-table th, .custom-table td {
+            padding: 10px;
+            border-bottom: 1px solid #e5e7eb;
+            border-right: 1px solid #f3f4f6;
+        }
+        .custom-table th {
+            font-size: 0.85rem;
+            color: #334155;
+        }
+        .th-group {
+            background-color: #e2e8f0;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 2px solid #cbd5e1;
+        }
+        .th-sub {
+            background-color: #f8fafc;
+            font-weight: 600;
+        }
+        .custom-table tbody tr:hover {
+            background-color: #f1f5f9;
+        }
+        .td-center { text-align: center; font-weight: 500; }
+        .td-highlight { text-align: center; font-weight: bold; color: #4338ca; background-color: #eef2ff; }
 
-/* Etiquetas y Botones pequeños */
-.badge {
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: bold;
-    display: inline-block;
-    border: 1px solid transparent;
-}
-.badge-success { background-color: #dcfce7; color: #166534; border-color: #bbf7d0; }
-.badge-warning { background-color: #fef08a; color: #854d0e; border-color: #fde047; }
-.btn-link {
-    background-color: #e0e7ff;
-    color: #4338ca;
-    padding: 4px 8px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 0.75rem;
-    font-weight: bold;
-    display: inline-block;
-    margin-right: 4px;
-    margin-bottom: 4px;
-}
-.btn-link:hover { background-color: #c7d2fe; }
-.obs-box {
-    background-color: #f8fafc;
-    padding: 6px;
-    border: 1px solid #e5e7eb;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    color: #475569;
-}
+        /* Etiquetas y Botones pequeños */
+        .badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: inline-block;
+            border: 1px solid transparent;
+        }
+        .badge-success { background-color: #dcfce7; color: #166534; border-color: #bbf7d0; }
+        .badge-warning { background-color: #fef08a; color: #854d0e; border-color: #fde047; }
+        .btn-link {
+            background-color: #e0e7ff;
+            color: #4338ca;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 4px;
+            margin-bottom: 4px;
+        }
+        .btn-link:hover { background-color: #c7d2fe; }
+        .obs-box {
+            background-color: #f8fafc;
+            padding: 6px;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: #475569;
+        }
     </style>
 </head>
 <body>
@@ -211,50 +211,51 @@
         <p class="dev-text">Desarrollado por</p>
         <img src="https://static.wixstatic.com/media/d0ce54_c999d1aa9976438a98b0f5b2157b7adc~mv2.png" alt="Logo Desarrollador" class="logo-dev">
     </div>
+
     <!-- Pantalla de Panel Administrativo desde Cero -->
-<div id="admin-screen" class="admin-container hidden">
-    <div class="admin-header-flex">
-        <h2 class="admin-title">Panel de Control de Impulsos</h2>
-        <div>
-            <span id="admin-user-display" style="margin-right: 15px; font-weight: bold; color: #475569;"></span>
-            <button onclick="cerrarSesion()" class="btn-danger">Cerrar Sesión</button>
+    <div id="admin-screen" class="admin-container hidden">
+        <div class="admin-header-flex">
+            <h2 class="admin-title">Panel de Control de Impulsos</h2>
+            <div>
+                <span id="admin-user-display" style="margin-right: 15px; font-weight: bold; color: #475569;"></span>
+                <button onclick="cerrarSesion()" class="btn-danger">Cerrar Sesión</button>
+            </div>
         </div>
+        
+        <div class="table-responsive">
+            <table class="custom-table">
+                <thead>
+                    <!-- Agrupación Superior -->
+                    <tr>
+                        <th class="th-group">Datos Generales</th>
+                        <th class="th-group" colspan="5">Inventario Inicial</th>
+                        <th class="th-group" colspan="2">Resultados</th>
+                        <th class="th-group" colspan="3">Inventario Final</th>
+                        <th class="th-group">Evidencias</th>
+                    </tr>
+                    <!-- Subtítulos -->
+                    <tr>
+                        <th class="th-sub">Tienda / Usuario / Fecha</th>
+                        <th class="th-sub td-center">Pq (130)</th>
+                        <th class="th-sub td-center">Md (250)</th>
+                        <th class="th-sub td-center">Gr (500)</th>
+                        <th class="th-sub td-center">Cucharas</th>
+                        <th class="th-sub td-center">Vasos</th>
+                        <th class="th-sub td-center">Degust.</th>
+                        <th class="th-sub td-center">Ventas</th>
+                        <th class="th-sub td-center">Pq (130)</th>
+                        <th class="th-sub td-center">Md (250)</th>
+                        <th class="th-sub td-center">Gr (500)</th>
+                        <th class="th-sub">Fotos y Notas</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-registros-body">
+                    <!-- Registros dinámicos -->
+                </tbody>
+            </table>
+        </div>
+        <button onclick="cargarRegistrosAdmin()" class="btn-primary">Actualizar Tabla</button>
     </div>
-    
-    <div class="table-responsive">
-        <table class="custom-table">
-            <thead>
-                <!-- Agrupación Superior -->
-                <tr>
-                    <th class="th-group">Datos Generales</th>
-                    <th class="th-group" colspan="5">Inventario Inicial</th>
-                    <th class="th-group" colspan="2">Resultados</th>
-                    <th class="th-group" colspan="3">Inventario Final</th>
-                    <th class="th-group">Evidencias</th>
-                </tr>
-                <!-- Subtítulos -->
-                <tr>
-                    <th class="th-sub">Tienda / Usuario / Fecha</th>
-                    <th class="th-sub td-center">Pq (130)</th>
-                    <th class="th-sub td-center">Md (250)</th>
-                    <th class="th-sub td-center">Gr (500)</th>
-                    <th class="th-sub td-center">Cucharas</th>
-                    <th class="th-sub td-center">Vasos</th>
-                    <th class="th-sub td-center">Degust.</th>
-                    <th class="th-sub td-center">Ventas</th>
-                    <th class="th-sub td-center">Pq (130)</th>
-                    <th class="th-sub td-center">Md (250)</th>
-                    <th class="th-sub td-center">Gr (500)</th>
-                    <th class="th-sub">Fotos y Notas</th>
-                </tr>
-            </thead>
-            <tbody id="tabla-registros-body">
-                <!-- Registros dinámicos -->
-            </tbody>
-        </table>
-    </div>
-    <button onclick="cargarRegistrosAdmin()" class="btn-primary">Actualizar Tabla</button>
-</div>
 
     <!-- Pantalla Principal -->
     <div id="app-screen" class="card hidden">
@@ -299,7 +300,7 @@
 
         <!-- Campos dinámicos para FINAL -->
         <div id="seccion-final" class="hidden">
-            <h3>Gasto de Arándanos</h3>
+            <h3>Gasto de MINCA</h3>
             <label>Gasto Concentrado Pequeño (130ml)</label>
             <input type="number" id="gasto_pequeno" value="0" min="0">
             
@@ -336,7 +337,6 @@
             const usuario = document.getElementById('user').value.trim();
             const clave = document.getElementById('pass').value.trim();
             
-            // NUEVO: Verificar conexión antes de consultar a Google
             if (!navigator.onLine) {
                 alert("No tienes conexión a internet. Por favor, revisa tu Wi-Fi o datos móviles para ingresar.");
                 return;
@@ -346,28 +346,20 @@
                 alert("Por favor completa usuario y contraseña.");
                 return;
             }
-            if (!usuario || !clave) {
-                alert("Por favor completa usuario y contraseña.");
-                return;
-            }
 
             try {
-                // El botón puede mostrar un estado de carga si lo deseas
                 let response = await fetch(`${WEB_APP_URL}?action=login&usuario=${encodeURIComponent(usuario)}&clave=${encodeURIComponent(clave)}`);
-                let result = await response.json(); // Aquí guardamos la respuesta como 'result'
+                let result = await response.json(); 
 
-                // Usamos 'result' en toda la validación
                 if (result.success) {
                     currentUser = usuario;
                     const rol = result.rol; 
                     
-                    // Guardamos los datos localmente
                     localStorage.setItem("user", usuario);
                     localStorage.setItem("rol", rol);
                     
                     document.getElementById("login-screen").classList.add("hidden");
 
-                    // Validar redirección según el rol
                     if (rol.toLowerCase() === "administrador" || rol.toLowerCase() === "admin") {
                         document.getElementById("admin-screen").classList.remove("hidden");
                         document.getElementById("admin-user-display").innerText = `Administrador: ${currentUser}`;
@@ -375,7 +367,7 @@
                     } else {
                         document.getElementById("app-screen").classList.remove("hidden");
                         document.getElementById("user-display").innerText = `Usuario: ${currentUser} (${rol})`;
-                        cargarClientes(); // Importante: cargar los clientes si es un usuario normal
+                        cargarClientes(); 
                     }
                 } else {
                     alert(result.error);
@@ -384,8 +376,8 @@
                 alert("Error de conexión: " + error.message);
             }
         }
-// Función para descargar y pintar los registros en la tabla
-async function cargarRegistrosAdmin() {
+
+        async function cargarRegistrosAdmin() {
             const tbody = document.getElementById("tabla-registros-body");
             tbody.innerHTML = `<tr><td colspan="12" class="td-center" style="padding: 2rem; color: #64748b;">Consultando datos en la nube...</td></tr>`;
 
@@ -400,11 +392,9 @@ async function cargarRegistrosAdmin() {
                         return;
                     }
 
-                    // Invertimos para mostrar el más reciente arriba
                     result.registros.reverse().forEach(reg => {
                         let tr = document.createElement("tr");
                         
-                        // Determinar color de la etiqueta de estado
                         let estadoBadge = reg.estado === 'Completado' 
                             ? `<span class="badge badge-success">✅ Completado</span>` 
                             : `<span class="badge badge-warning">⏳ ${reg.estado}</span>`;
@@ -448,10 +438,11 @@ async function cargarRegistrosAdmin() {
                 tbody.innerHTML = `<tr><td colspan="12" class="td-center" style="padding: 2rem; color: #ef4444; font-weight:bold;">Error de conexión con el servidor.</td></tr>`;
             }
         }
-function cerrarSesion() {
-    localStorage.clear();
-    location.reload();
-}
+
+        function cerrarSesion() {
+            localStorage.clear();
+            location.reload();
+        }
 
         async function cargarClientes() {
             try {
@@ -497,23 +488,20 @@ function cerrarSesion() {
             const gpsDataElement = document.getElementById('gps-data');
             gpsDataElement.innerText = "Obteniendo ubicación... por favor espera.";
 
-            // Opciones cruciales para que funcione correctamente en celulares
             const opcionesGPS = {
-                enableHighAccuracy: true, // Intenta usar el GPS del dispositivo
-                timeout: 15000,           // MÁXIMO 15 segundos de espera (evita que se congele)
-                maximumAge: 0             // Fuerza a obtener una ubicación fresca, sin usar caché
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 0
             };
 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    // Si es exitoso, guardamos en tus variables globales
                     latitud = position.coords.latitude;
                     longitud = position.coords.longitude;
                     gpsDataElement.innerText = `Lat: ${latitud.toFixed(6)}, Lon: ${longitud.toFixed(6)}`;
                     alert("📍 Ubicación capturada con éxito.");
                 },
                 (error) => {
-                    // Manejo de errores específico para guiar al impulsador
                     let mensajeError = "Error desconocido.";
                     switch(error.code) {
                         case error.PERMISSION_DENIED:
@@ -534,7 +522,6 @@ function cerrarSesion() {
         }
 
         async function guardarRegistro() {
-            // Verificar conexión antes de iniciar el guardado
             if (!navigator.onLine) {
                 alert("Estás sin conexión a internet. Conéctate a una red para guardar y enviar este registro.");
                 return;
@@ -548,16 +535,14 @@ function cerrarSesion() {
                 alert("Selecciona un cliente o distribuidor.");
                 return;
             }
-            if (!latitud || !longitud) {
-                alert("Debes capturar las coordenadas GPS obligatoriamente.");
-                return;
-            }
+            
+            // LA VALIDACIÓN DE GPS HA SIDO ELIMINADA PARA QUE SEA OPCIONAL
+            
             if (fileInput.files.length === 0) {
                 alert("La fotografía es obligatoria.");
                 return;
             }
 
-            // NUEVO: Bloquear el botón para evitar doble envío
             let btnGuardar = document.getElementById('btnGuardar');
             if (btnGuardar) {
                 btnGuardar.disabled = true;
@@ -608,7 +593,6 @@ function cerrarSesion() {
                         location.reload();
                     } else {
                         alert("Error: " + result.error);
-                        // NUEVO: Desbloquear el botón si hay error en el servidor
                         if (btnGuardar) {
                             btnGuardar.disabled = false;
                             btnGuardar.innerText = "Guardar e Enviar";
@@ -618,7 +602,6 @@ function cerrarSesion() {
                     }
                 } catch (error) {
                     alert("Error al enviar los datos: " + error.message);
-                    // NUEVO: Desbloquear el botón si falla el internet a mitad de camino
                     if (btnGuardar) {
                         btnGuardar.disabled = false;
                         btnGuardar.innerText = "Guardar e Enviar";
@@ -630,7 +613,6 @@ function cerrarSesion() {
 
             reader.readAsDataURL(file);
         }
-      
     </script>
 </body>
 </html>
