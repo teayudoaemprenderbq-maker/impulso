@@ -328,7 +328,7 @@
     </div>
 
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxJGZ4MFwxqzjy2CcbqoGmiCKhrTEjojDhOIPOqEH9E93-B3CLky4QVvokoOfQsmEkx7A/exec"; 
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzHFyIfa9Z6SqaTkgJ6WHd0vfqiDMQm9czWkK7MAjLFIgmG_pl--wl8VIeVrjzy7WnQvQ/exec"; 
         let currentUser = "";
         let latitud = "";
         let longitud = "";
@@ -378,67 +378,67 @@
         }
 
         async function cargarRegistrosAdmin() {
-            const tbody = document.getElementById("tabla-registros-body");
-            tbody.innerHTML = `<tr><td colspan="12" class="td-center" style="padding: 2rem; color: #64748b;">Consultando datos en la nube...</td></tr>`;
-
-            try {
-                const response = await fetch(`${WEB_APP_URL}?action=getRegistros`);
-                const result = await response.json();
-
-                if (result.success) {
-                    tbody.innerHTML = "";
-                    if (result.registros.length === 0) {
-                        tbody.innerHTML = `<tr><td colspan="12" class="td-center" style="padding: 2rem; color: #64748b;">No hay registros disponibles aún.</td></tr>`;
-                        return;
-                    }
-
-                    result.registros.reverse().forEach(reg => {
-                        let tr = document.createElement("tr");
-                        
-                        let estadoBadge = reg.estado === 'Completado' 
-                            ? `<span class="badge badge-success">✅ Completado</span>` 
-                            : `<span class="badge badge-warning">⏳ ${reg.estado}</span>`;
-
-                        tr.innerHTML = `
-                            <td style="min-width: 220px;">
-                                <div style="font-weight: bold; color: #1e293b; margin-bottom: 4px;">${reg.tienda}</div>
-                                <div style="font-size: 0.8rem; color: #475569;">👤 ${reg.usuario}</div>
-                                <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 8px;">📅 ${reg.fecha}</div>
-                                ${estadoBadge}
-                            </td>
-                            
-                            <td class="td-center">${reg.invPequeno}</td>
-                            <td class="td-center">${reg.invMediano}</td>
-                            <td class="td-center">${reg.invGrande}</td>
-                            <td class="td-center">${reg.cucharas}</td>
-                            <td class="td-center">${reg.vasos}</td>
-                            
-                            <td class="td-center">${reg.degustaciones}</td>
-                            <td class="td-highlight">${reg.ventas}</td>
-                            
-                            <td class="td-center">${reg.finPequeno}</td>
-                            <td class="td-center">${reg.finMediano}</td>
-                            <td class="td-center">${reg.finGrande}</td>
-                            
-                            <td style="min-width: 180px;">
-                                <div>
-                                    ${reg.fotoInicio ? `<a href="${reg.fotoInicio}" target="_blank" class="btn-link">📸 Inicio</a>` : '<span style="font-size:0.75rem; color:#94a3b8;">Sin foto inicial</span>'}
-                                    ${reg.fotoFinal ? `<a href="${reg.fotoFinal}" target="_blank" class="btn-link">📸 Fin</a>` : ''}
-                                </div>
-                                ${reg.observaciones ? `<div class="obs-box" style="margin-top: 8px;" title="${reg.observaciones}">📝 ${reg.observaciones}</div>` : ''}
-                            </td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
-                } else {
-                    alert("Error al cargar los datos administrativos: " + result.error);
-                }
-            } catch (error) {
-                console.error("Error de conexión:", error);
-                tbody.innerHTML = `<tr><td colspan="12" class="td-center" style="padding: 2rem; color: #ef4444; font-weight:bold;">Error de conexión con el servidor.</td></tr>`;
+    const tbody = document.getElementById("tabla-registros-body");
+    tbody.innerHTML = `<tr><td colspan="12" class="td-center" style="padding: 2rem; color: #64748b;">Consultando datos en la nube...</td></tr>`;
+    try {
+        const response = await fetch(`${WEB_APP_URL}?action=getRegistros`);
+        const result = await response.json();
+        if (result.success) {
+            tbody.innerHTML = "";
+            if (result.registros.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="12" class="td-center" style="padding: 2rem; color: #64748b;">No hay registros disponibles aún.</td></tr>`;
+                return;
             }
-        }
+            result.registros.reverse().forEach(reg => {
+                let tr = document.createElement("tr");
+                
+                let estadoBadge = reg.estado === 'Completado' 
+                    ? `<span class="badge badge-success">✅ Completado</span>` 
+                    : `<span class="badge badge-warning">⏳ ${reg.estado}</span>`;
+                
+                // Muestra la hora de finalización o "En proceso..." si el turno sigue abierto
+                let horaFinalTexto = reg.fechaFinal ? reg.fechaFinal : "En proceso...";
 
+                tr.innerHTML = `
+                    <td style="min-width: 220px;">
+                        <div style="font-weight: bold; color: #1e293b; margin-bottom: 4px;">${reg.tienda}</div>
+                        <div style="font-size: 0.8rem; color: #475569;">👤 ${reg.usuario}</div>
+                        <div style="font-size: 0.78rem; color: #16a34a; margin-top: 4px;">🟢 <b>Inicio:</b> ${reg.fecha}</div>
+                        <div style="font-size: 0.78rem; color: #dc2626; margin-bottom: 8px;">🔴 <b>Fin:</b> ${horaFinalTexto}</div>
+                        ${estadoBadge}
+                    </td>
+                    
+                    <td class="td-center">${reg.invPequeno}</td>
+                    <td class="td-center">${reg.invMediano}</td>
+                    <td class="td-center">${reg.invGrande}</td>
+                    <td class="td-center">${reg.cucharas}</td>
+                    <td class="td-center">${reg.vasos}</td>
+                    
+                    <td class="td-center">${reg.degustaciones}</td>
+                    <td class="td-highlight">${reg.ventas}</td>
+                    
+                    <td class="td-center">${reg.finPequeno}</td>
+                    <td class="td-center">${reg.finMediano}</td>
+                    <td class="td-center">${reg.finGrande}</td>
+                    
+                    <td style="min-width: 180px;">
+                        <div>
+                            ${reg.fotoInicio ? `<a href="${reg.fotoInicio}" target="_blank" class="btn-link">📸 Inicio</a>` : '<span style="font-size:0.75rem; color:#94a3b8;">Sin foto inicial</span>'}
+                            ${reg.fotoFinal ? `<a href="${reg.fotoFinal}" target="_blank" class="btn-link">📸 Fin</a>` : ''}
+                        </div>
+                        ${reg.observaciones ? `<div class="obs-box" style="margin-top: 8px;" title="${reg.observaciones}">📝 ${reg.observaciones}</div>` : ''}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } else {
+            alert("Error al cargar los datos administrativos: " + result.error);
+        }
+    } catch (error) {
+        console.error("Error de conexión:", error);
+        tbody.innerHTML = `<tr><td colspan="12" class="td-center" style="padding: 2rem; color: #ef4444; font-weight:bold;">Error de conexión con el servidor.</td></tr>`;
+    }
+}
         function cerrarSesion() {
             localStorage.clear();
             location.reload();
